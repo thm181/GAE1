@@ -42,7 +42,7 @@ knitr::opts_chunk$set(
 library(papaja)
 library(tidyverse)
 library(kableExtra)
-library(latex2exp)
+library(latex2exp)   # Allows me to use LaTeX in ggplot2
 
 
 # Use the papaja package to create a bibliography of package citations:
@@ -57,9 +57,9 @@ Relatively early in your textbook [@QK], you'll be introduced to an example data
 1.  $NO_3^-$ (`NO3`),
 2.  Total Organic $N$ (`TON`),
 3.  Total $N$ (`TN`),
-4.  $NH_4^2$ (`NH4`),
+4.  $NH_4^{2+}$ (`NH4`),
 5.  Dissolved Organic $C$ (`DOC`),
-6.  $SO_4$ (`SO4`),
+6.  $SO_4^{2-}$ (`SO4`),
 7.  $Cl^-$ (`CL`),
 8.  $Ca^{2+}$ (`CA`),
 9.  $Mg^{2+}$ (`MG`),
@@ -101,16 +101,26 @@ Or, if I wanted to just list the chemical parameters (rows 6 through 15) for Win
 
 df1[5,c(1,6:15)]
 ```
+## Methods
 
-## Statistical Methods:
+You will have noticed that the format of the information we've produced up to this point isn't very attractive, readable, or easy to interpret. We need to produce publication-quality tables and figures to communicate with our readers. Typically we will summarize our data to condense it into a more easily understood form or display it in graphical form to help tell our story.
 
-Use the tbl_summary() function from the gtsummary package [@R-gtsummary] in R [@R-base] to produce a formatted table that reports the mean and standard deviation, median and interquartile range (IQR), and sample size for each of the variables that were measured. Use ggplot() provided by the ggplot2 package ([@R-ggplot2]) included in the tidyverse package [@R-tidyverse] to produce a scatter plots of $H^+$ and $Ca^{2+}$ versus sample elevation (`SAMPELEV`).
+In the code-chunk below, I'm using the graphical abilities provided by the ggplot2 package [@R-ggplot2] provided by the tidyverse [@R-tidyverse] to produce a scatter plot of sulfate concentration (**SO4**) versus sample elevation (**SAMPELEV**).
 
-## Results
+```{r Fig1, fig.cap="Nitrate concentration versus elevation. Each observation was taken from a different stream."}
 
-```{r Tab1}
-kbl(head(df1), caption = "This is the first six lines of the file.")
-
+ggplot(data = df1, aes(x = SAMPELEV, y = NO3)) +
+  geom_point(shape = 16, 
+             size = 3,
+             color = "darkorchid4", # pretty close to WCU purple with 
+             alpha = 0.5) +         # alpha (transparency) set to 0.5
+  geom_smooth(span = 2) +           # for span, smaller is wigglier
+  labs(x = "Elevation where sample was taken (m)",
+       y = TeX("$NO_3^- \\; (\\mu mol/L)$")) +
+  theme_classic()                   # Produces and "old school" graph
 ```
+
+
+
 
 # References:
