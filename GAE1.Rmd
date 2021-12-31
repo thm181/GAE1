@@ -109,7 +109,7 @@ Use the tbl_summary() function from the gtsummary package [@R-gtsummary] in R [@
 ## Results
 
 ```{r Tab1}
-kbl(head(df1), caption = "head")
+kbl(head(df1), caption = "This is the first six lines of the file.")
 
 ```
 
