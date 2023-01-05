@@ -147,7 +147,7 @@ We see that nitrates appear to increase rapidly between 200 and 400 m then to pl
 
 ```{r }
 #| label: tbl-tab1
-#| tbl-cap: "Nitrate concentrations for samples from Lower elevations ($\\le$ 400 m) and those from Higher elevations (> 400 m)."
+#| tbl-cap: "Nitrate concentrations for samples from Lower elevations (≤ 400 m) and those from Higher elevations (> 400 m)."
 
 df1$ELEVCLAS <- ifelse(df1$SAMPELEV <= 400, "Lower", "Higher")
 
@@ -159,16 +159,33 @@ tab1 <- df1 |>
             SDNO3 = sd(NO3),
             n = n())
 
-kbl(tab1,
-    digits = c(0,0,0,1,1,2,2,0),
-    align = c("lrrrrr"),
-    col.names = c(" ", "mean", "sd", "mean", "sd", "n")) |>
-  kable_classic(full_width = FALSE,
-                bootstrap_options = "striped") |>
-  add_header_above(c(" " = 1, 
-                     "$Elevation$" = 2, 
-                     "$NO_3^- \\; (\\mu mol/L)$" = 2,
-                     " " = 1))
+kbl(
+  tab1,
+  digits = c(0,0,0,1,1,2,2,0),
+  align = c("lrrrrr"),
+  col.names = c(" ", "mean", "sd", "mean", "sd", "n") 
+  ) |>
+  kable_classic(
+    full_width = FALSE,
+    bootstrap_options = "striped") |>
+  column_spec(
+    1:6,
+    width = "15mm"
+  ) |>
+  column_spec(
+    4,
+    width = "40mm"
+  ) |>
+  add_header_above(
+    c(
+      " " = 1, 
+      "$$Elevation (m)$$" = 2, 
+      "$$NO_3^- \\; (\\mu mol/L)$$" = 2,
+      " " = 1
+      ),
+    align = "right"
+  ) 
+
 ```
 
 The mean nitrate concentration for the 33 higher elevation samples was more than double that of the lower elevation samples (@tbl-tab1).
