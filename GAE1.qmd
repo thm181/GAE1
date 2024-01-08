@@ -3,19 +3,17 @@ title: "GAE1"
 author: "T.H. Martin"
 format: 
   html:
-    self-contained: true
-    toc: true
+    embed-resources: true
+    toc: false
     code-tools: true
 
 csl: ecology.csl
 
-bibliography: 
-- R_GAE1.bib
-- references.bib
+bibliography: references.bib
 ---
 
 ```{r}
-#| label: SetUp
+#| label: setup
 #| message: FALSE
 #| echo: TRUE
 
@@ -38,13 +36,8 @@ knitr::opts_chunk$set(
 library(latex2exp)       
 library(kableExtra)
 library(knitr)
-library(papaja)
 library(tidyverse)
 
-# a command from the papaja package that builds a bibliography file for packages
-# loaded by the library() function.
-
-r_refs(file = "R_GAE1.bib")
 ```
 
 <!--# This chunk is a work-around to allow left-aligned table captions -->
@@ -73,7 +66,7 @@ Relatively early in your textbook [@Quinn.Keough2002], you'll be introduced to a
 
 ## Data import
 
-The data are provided as a comma-separated-value (.csv) "[flat-file database](https://en.wikipedia.org/wiki/Flat-file_database)" by @Quinn.Keough2002, "lovett.csv." I've imported this text file using the read_csv() function provided by the readr package [@R-readr] included in the tidyverse metapackage [@R-tidyverse]. This function will create a "[tibble](https://tibble.tidyverse.org/)" which is a special case of ***data.frame***, the standard approach for storing data in memory for most ***R*** operations. In ***R*** jargon, a data.frame is a particular class of ***list***, and lists are flexible ***R*** objects that may contain elements of different types like − numbers, strings, vectors and even other lists. A list can also contain a matrix or a function as its elements. In R, the term ***vectors*** may be more specific or more broad than what you may have been introduced to in a math class. Typically, when you see reference to *vector* in the context of ***R***, it's referring to ***atomic vectors***, that is, they are data structures that contain a single type of data:
+The data are provided as a comma-separated-value (.csv) "[flat-file database](https://en.wikipedia.org/wiki/Flat-file_database)" by @Quinn.Keough2002, "lovett.csv." I've imported this text file using the read_csv() function provided by the readr package [@readr] included in the tidyverse metapackage [@tidyverse]. This function will create a "[tibble](https://tibble.tidyverse.org/)" which is a special case of ***data.frame***, the standard approach for storing data in memory for most ***R*** operations. In ***R*** jargon, a data.frame is a particular class of ***list***, and lists are flexible ***R*** objects that may contain elements of different types like − numbers, strings, vectors and even other lists. A list can also contain a matrix or a function as its elements. In R, the term ***vectors*** may be more specific or more broad than what you may have been introduced to in a math class. Typically, when you see reference to *vector* in the context of ***R***, it's referring to ***atomic vectors***, that is, they are data structures that contain a single type of data:
 
 -   logical -- TRUE or FALSE,
 -   integer - numeric data that are whole integers,
@@ -114,7 +107,7 @@ You may use this approach to list the contents of an entire column or row just b
 df1[1,]
 ```
 
-Or, if I wanted to just list the chemical parameters (columns 6 through 15) for Windham Ridge (row 5) while also including the stream name, I can use the c() function to create a list of columns:
+Or, if I wanted to just list the chemical parameters (columns 6 through 15) for Windham Ridge (row 5) while also including the stream name, I can use the combine-or-concatenate function, c(), to create a list of columns:
 
 ```{r}
 # The "c" operator in R combines values.
@@ -126,7 +119,7 @@ df1[5,c(1,6:15)]
 
 You will have noticed that the format of the information we've produced up to this point isn't very attractive, readable, or easy to interpret. We need to produce publication-quality tables and figures to communicate with our readers. Typically we will summarize our data to condense it into a more easily understood form or display it in graphical form to help tell our story.
 
-In the code-chunk below, I'm using the graphical abilities provided by the ggplot2 package [@R-ggplot2] provided by the tidyverse [@R-tidyverse] to produce a scatter plot of nitrate concentration (**NO3**) versus sample elevation (**SAMPELEV**).
+In the code-chunk below, I'm using the graphical abilities provided by the ggplot2 package [@ggplot2] provided by the tidyverse metapackage [@tidyverse] to produce a scatter plot of nitrate concentration (**NO3**) versus sample elevation (**SAMPELEV**). Note that I include LaTeX code in the axis label by using the TeX() function from the latex2exp package [@latex2exp]. Note that Quarto will automatically number figures and tables and allow you to cross-reference them in the text.
 
 ```{r }
 #| label: fig-Fig1
@@ -140,10 +133,10 @@ ggplot(data = df1, aes(x = SAMPELEV, y = NO3)) +
   geom_smooth(span = 2) +           # for span, smaller is wigglier
   labs(x = "Elevation where sample was taken (m)",
        y = TeX("$NO_3^- \\; (\\mu mol/L)$")) +
-  theme_classic()                   # Produces and "old school" graph
+  theme_classic()                   # Produces an "old school" graph
 ```
 
-We see that nitrates appear to increase rapidly between 200 and 400 m then to plateau (@fig-Fig1). In the code chunk below, I have created a tibble that summarizes the nitrate data that I can use to produce a publication quality table using the kbl() function from the knitr [@R-knitr] and kableExtra packages [@R-kableExtra].
+We see that nitrates appear to increase rapidly between 200 and 400 m then to plateau (@fig-Fig1). In the code chunk below, I have created a tibble that summarizes the nitrate data that I can use to produce a publication quality table using the kbl() function from the knitr and kableExtra packages [@knitr; @kableExtra]. Note that there are several different packages available for producing tables, and honestly, none have reached the level of maturity that rivals that of the graphing capability. I think the gt package [@gt] will get there, but it has a steep learning curve.
 
 ```{r }
 #| label: tbl-tab1
