@@ -1,2 +1,2 @@
 # GAE1
-An introduction to graded application exercises
+Introductory graded application exercise.
